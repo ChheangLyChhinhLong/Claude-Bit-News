@@ -79,6 +79,11 @@ export async function getNews(category: NewsCategory | string = "technology"): P
 }
 
 export async function getArticle(id: string): Promise<Article | undefined> {
-  const all = await getNews("all");
-  return all.find((article) => article.id === id) || fallbackArticles.find((article) => article.id === id);
+  const categories: NewsCategory[] = ["technology", "business", "sports", "entertainment", "health", "science"];
+  for (const category of categories) {
+    const articles = await getNews(category);
+    const match = articles.find((article) => article.id === id || slugify(article.title) === id || article.id.startsWith(`${id}-`));
+    if (match) return match;
+  }
+  return fallbackArticles.find((article) => article.id === id || slugify(article.title) === id || article.id.startsWith(`${id}-`));
 }
