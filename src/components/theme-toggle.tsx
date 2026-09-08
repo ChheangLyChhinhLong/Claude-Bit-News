@@ -15,11 +15,11 @@ function subscribe(onStoreChange: () => void) {
 }
 
 function getTheme() {
-  return window.localStorage.getItem("theme") === "light";
+  return window.localStorage.getItem("theme") !== "dark";
 }
 
 export function ThemeToggle() {
-  const isLight = useSyncExternalStore(subscribe, getTheme, () => false);
+  const isLight = useSyncExternalStore(subscribe, getTheme, () => true);
 
   function toggleTheme() {
     const nextIsLight = !isLight;
