@@ -1,13 +1,21 @@
 import { z } from "zod";
 
+const urlFromEnv = (fallback: string) => z.preprocess((value) => {
+  if (typeof value !== "string") return fallback;
+  const cleaned = value.trim().replace(/^['"]|['"]$/g, "");
+  if (!cleaned) return fallback;
+  const markdownMatch = cleaned.match(/^\[([^\]]+)\]\([^)]*\)$/);
+  return (markdownMatch?.[1] || cleaned).replace(/^\[|\]$/g, "");
+}, z.string().url());
+
 const envSchema = z.object({
   NEXT_PUBLIC_SITE_NAME: z.string().default("Claude Bit News"),
-  NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
+  NEXT_PUBLIC_SITE_URL: urlFromEnv("http://localhost:3000"),
   NEWS_API_ORG_KEY: z.string().optional(),
   GOOGLE_NEWS_API_KEY: z.string().optional(),
   NEWS_DATA_API_KEY: z.string().optional(),
   MASSIVE_API_KEY: z.string().optional(),
-  GDELT_DOC_API_URL: z.string().url().default("https://api.gdeltproject.org/api/v2/doc/doc"),
+  GDELT_DOC_API_URL: urlFromEnv("https://api.gdeltproject.org/api/v2/doc/doc"),
   NEXT_PUBLIC_GOOGLE_ADSENSE_ID: z.string().optional(),
   NEXT_PUBLIC_VERCEL_ANALYTICS_ID: z.string().optional(),
 });
