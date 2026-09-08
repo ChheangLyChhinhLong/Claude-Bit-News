@@ -1,0 +1,3 @@
+import { SiteHeader } from "@/components/site-header";
+
+export default function PrivacyPolicy() { return <><SiteHeader /><main className="mx-auto max-w-3xl px-5 py-16 lg:px-8"><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e86e42]">The Signal</p><h1 className="display-face mt-3 text-5xl font-bold">Privacy policy</h1><div className="mt-8 space-y-5 text-base leading-8 text-[#536057]"><p>We use necessary cookies and privacy-conscious analytics to operate and improve this site. We do not sell personal information.</p><p>Advertising partners may use cookies to serve relevant ads and measure performance. You can manage cookie preferences through your browser settings.</p><p>Questions about this policy can be sent to the site operator.</p></div></main></>; }

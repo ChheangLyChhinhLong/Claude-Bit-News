@@ -1,0 +1,7 @@
+import Link from "next/link";
+import { Menu, Radio, Search } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
+
+export function SiteHeader() {
+  return <header className="border-b border-[var(--line)] bg-[var(--surface)]/90 backdrop-blur-md"><div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8"><Link href="/" className="flex items-center gap-3" aria-label="Claude Bit News home"><span className="grid size-10 place-items-center rounded-full bg-[var(--green)] text-[#08110d]"><Radio size={18} /></span><span><span className="display-face block text-2xl font-bold leading-none">Claude Bit News</span><span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--muted)]">News, with context</span></span></Link><nav className="hidden items-center gap-7 text-sm font-semibold md:flex"><Link href="/search?q=latest">Latest</Link><Link href="/search?q=technology">Topics</Link><Link href="/article/open-source-ai-labs">The Brief</Link></nav><div className="flex items-center gap-2"><Link href="/search" className="grid size-10 place-items-center rounded-full border border-[var(--line)] hover:bg-[var(--surface-muted)]" aria-label="Search"><Search size={18} /></Link><ThemeToggle /><button className="grid size-10 place-items-center rounded-full border border-[var(--line)] hover:bg-[var(--surface-muted)] md:hidden" aria-label="Open menu"><Menu size={18} /></button></div></div></header>;
+}
