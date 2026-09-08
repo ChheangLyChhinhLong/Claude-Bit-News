@@ -66,8 +66,10 @@ async function fromGdelt(category: string): Promise<Article[]> {
 }
 
 export async function getNews(category: NewsCategory | string = "technology"): Promise<Article[]> {
-  // GDELT is keyless and free, so it provides the default near-real-time feed.
-  const providers = [fromGdelt, fromNewsApi, fromGoogleNews, fromNewsData];
+  // Prefer configured providers with article text, then use free keyless GDELT.
+  const providers = env.NEWS_DATA_API_KEY
+    ? [fromNewsData, fromGdelt, fromNewsApi, fromGoogleNews]
+    : [fromGdelt, fromNewsApi, fromGoogleNews];
   for (const provider of providers) {
     try {
       const articles = await provider(category);
