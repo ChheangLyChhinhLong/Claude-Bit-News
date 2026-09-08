@@ -59,14 +59,15 @@ async function fromNewsData(category: string): Promise<Article[]> {
 
 async function fromGdelt(category: string): Promise<Article[]> {
   const query = encodeURIComponent(`${category} sourcelang:english`);
-  const response = await fetch(`${env.GDELT_DOC_API_URL}?query=${query}&mode=ArtList&maxrecords=12&format=json&sort=HybridRel`, { next: { revalidate: 300 } });
+  const response = await fetch(`${env.GDELT_DOC_API_URL}?query=${query}&mode=ArtList&maxrecords=12&format=json&sort=datedesc&timespan=24h`, { next: { revalidate: 60 } });
   if (!response.ok) throw new Error(`GDELT returned ${response.status}`);
   const data = (await response.json()) as { articles?: GdeltArticle[] };
   return (data.articles || []).map((article) => normalize(article, category)).filter((article): article is Article => Boolean(article));
 }
 
 export async function getNews(category: NewsCategory | string = "technology"): Promise<Article[]> {
-  const providers = [fromNewsApi, fromGoogleNews, fromNewsData, fromGdelt];
+  // GDELT is keyless and free, so it provides the default near-real-time feed.
+  const providers = [fromGdelt, fromNewsApi, fromGoogleNews, fromNewsData];
   for (const provider of providers) {
     try {
       const articles = await provider(category);
